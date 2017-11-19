@@ -1,0 +1,7 @@
+{
+  "name": "hw07",
+  "short_name": "hw07",
+  "description": "homework 7",
+  "start_url": "/",
+  "display": "standalone"
+}

@@ -1,0 +1,128 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/polymerfire/firebase-app.html">
+<link rel="import" href="../../bower_components/polymerfire/firebase-query.html">
+<link rel="import" href="../../bower_components/iron-list/iron-list.html">
+<link rel="import" href="../../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
+<link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower_components/neon-animation/web-animations.html">
+<link rel="import" href="../../bower_components/neon-animation/animations/reverse-ripple-animation.html">
+
+
+<dom-module id="my-main">
+    <template>
+        <firebase-app id="fireApp"
+                      auth-domain="homework5-9f425.firebaseapp.com"
+                      database-url="https://homework5-9f425.firebaseio.com"
+                      api-key="AIzaSyCAgV1EkZKrX1InBZl50whKJlNMmEEa9Ew"
+                      storage-bucket="homework5-9f425.appspot.com"
+                      messaging-sender-id="317585598613">
+        </firebase-app>
+        <firebase-query
+                path="/friend"
+                data="{{qryData}}">
+        </firebase-query>
+        <style include="iron-flex iron-flex-alignment"></style>
+        <style>
+            iron-list {
+                width: 60%;
+                height: 60vh;
+            }
+            #paperholder {
+                padding-top: 1em;
+            }
+            paper-card {
+                width:99%;
+                background-color: steelblue;
+                color: lightgray;
+                height: 120px;
+                padding: 1em 1em 1em;
+            }
+
+            #buttonHolder{
+                margin-top: 1em;
+                margin-bottom: 1em;
+            }
+
+            #key{
+                visibility: hidden;
+            }
+        </style>
+
+        <div id="buttonHolder">
+            <paper-button raised id="diaBtn" on-click="openDia">Add New</paper-button>
+        </div>
+        <iron-list items="[[qryData]]" as="friend">
+
+            <template>
+                <div id="paperholder">
+                    <paper-card elevation="4">
+                        <div class="layout vertical">
+                            <div class="flex self-start">Name: [[friend.name]]</div>
+                            <div class="flex self-end">Age:  [[friend.age]]</div>
+                            <div class="flex self-end">Phone:  [[friend.phone]]</div>
+                            <iron-icon icon="icons:delete" on-click="delete"></iron-icon>
+                        </div>
+                    </paper-card>
+                </div>
+            </template>
+        </iron-list>
+        <paper-dialog id="inputdialogue" modal on-iron-overlay-closed="diaClosed">
+            <paper-input id="nameInput" label="Name"></paper-input>
+            <paper-input id="phoneInput" label="Phone"></paper-input>
+            <paper-input id="ageInput" label="Age"></paper-input>
+            <div class="buttons">
+                <paper-button dialog-dismiss>Cancel</paper-button>
+                <paper-button dialog-confirm>Add</paper-button>
+            </div>
+        </paper-dialog>
+
+    </template>
+
+    <script>
+        /**
+         * @customElement
+         * @polymer
+         */
+        class MyMain extends Polymer.Element {
+
+            openDia(){
+                this.$.inputdialogue.open();
+            }
+
+            diaClosed(){
+
+                if (this.$.inputdialogue.closingReason.confirmed) {
+                    const dbRef = this.$.fireApp.app.database();
+                    alert ("You are entering " + this.$.nameInput.value + " into friends");
+                    dbRef.ref('/friend').push().set({ name : this.$.nameInput.value, age : this.$.ageInput.value, phone: this.$.phoneInput.value });
+                }
+            }
+
+            delete(ev){
+                const dbRef = this.$.fireApp.app.database();
+                //console.log(ev.model.friend.$key);
+                var item = ev.model.friend.$key;
+                dbRef.ref('/friend').child(item).remove();
+            }
+
+            static get is() { return 'my-main'; }
+            static get properties() {
+                return {
+                    prop1: {
+                        type: String,
+                        value: 'my-main'
+                    }
+                };
+            }
+        }
+
+        window.customElements.define(MyMain.is, MyMain);
+    </script>
+</dom-module>
+
