@@ -10,8 +10,6 @@
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../../bower_components/iron-icon/iron-icon.html">
 <link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
-<link rel="import" href="../../bower_components/neon-animation/web-animations.html">
-<link rel="import" href="../../bower_components/neon-animation/animations/reverse-ripple-animation.html">
 
 
 <dom-module id="my-main">
@@ -49,15 +47,16 @@
                 margin-bottom: 1em;
             }
 
-            #key{
-                visibility: hidden;
+            #infocard{
+                float:right;
+                width: 30%;
             }
         </style>
 
         <div id="buttonHolder">
             <paper-button raised id="diaBtn" on-click="openDia">Add New</paper-button>
         </div>
-        <iron-list items="[[qryData]]" as="friend">
+        <iron-list items="[[qryData]]" as="friend" selected-items="{{selectedItems}}" selection-enabled>
 
             <template>
                 <div id="paperholder">
@@ -72,6 +71,9 @@
                 </div>
             </template>
         </iron-list>
+        <paper-card id="infocard" elevation="2">
+            <div id="textArea"></div>
+        </paper-card>
         <paper-dialog id="inputdialogue" modal on-iron-overlay-closed="diaClosed">
             <paper-input id="nameInput" label="Name"></paper-input>
             <paper-input id="phoneInput" label="Phone"></paper-input>
@@ -114,11 +116,20 @@
             static get is() { return 'my-main'; }
             static get properties() {
                 return {
-                    prop1: {
-                        type: String,
-                        value: 'my-main'
+                    //prop1: {
+                       // type: String,
+                      //  value: 'my-main'
+                    selectedItems: {
+                        type: Object,
+                        value: null,
+                        observer: '_userSelection'
+                    }
                     }
                 };
+           // }
+
+            _userSelection(){
+
             }
         }
 
