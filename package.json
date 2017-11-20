@@ -1,0 +1,25 @@
+{
+  "name": "hw07",
+  "version": "1.0.0",
+  "description": "homwork 7",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tyleranson/hw07.git"
+  },
+  "author": "Tyler Anson",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tyleranson/hw07/issues"
+  },
+  "homepage": "https://github.com/tyleranson/hw07#readme",
+  "dependencies": {
+    "redux": "^3.7.2"
+  }
+}

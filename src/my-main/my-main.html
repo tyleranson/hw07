@@ -11,8 +11,8 @@
 <link rel="import" href="../../bower_components/iron-icon/iron-icon.html">
 <link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../../bower_components/polymer-redux/polymer-redux.html">
-<script src=../../node_modules/redux/dist/redux.js></script>
-
+<script src="../../node_modules/redux/dist/redux.js"></script>
+<script src="../../node_modules/redux/src/utils/createStore.js"></script>
 
 <dom-module id="my-main">
     <template>
@@ -124,7 +124,7 @@
                     selectedItems: {
                         type: Object,
                         value: null,
-                        observer: '_userSelection'
+                        observer: "_userSelection"
                     }
                     }
                 };
@@ -138,10 +138,14 @@
             }
         }
 
-        window.customElements.define(MyMain.is, MyMain);
+        //import { createStore } from 'redux'
 
+
+        window.customElements.define(MyMain.is, MyMain);
+        const store = Redux.createStore(myReducer);
+        ReduxMixin = PolymerRedux(store);
         const initialState = {};
-        
+
         const myReducer = (state = initialState, action) => {
             switch (action.type) {
                 case "show":
@@ -149,8 +153,7 @@
                 default: return state; /* required !!! */
             }
         };
-        const store = Redux.createStore(myReducer);
-        ReduxMixin = PolymerRedux(store);
+
 
     </script>
 </dom-module>
